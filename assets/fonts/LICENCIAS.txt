@@ -1,0 +1,6 @@
+Tipografías incrustadas en las imágenes del perfil (las mismas que victorsalmeron.dev):
+
+- Inter Tight — SIL Open Font License 1.1
+- Instrument Serif — SIL Open Font License 1.1
+- JetBrains Mono — SIL Open Font License 1.1
+  (obtenidas de Fontsource: https://fontsource.org)

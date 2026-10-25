@@ -1,0 +1,50 @@
+name: Actualizar perfil
+
+on:
+  schedule:
+    - cron: "17 5 * * *" # cada día, sobre las 7:17 en España
+  workflow_dispatch: # botón "Run workflow" para actualizarlo a mano
+  push:
+    branches: [main]
+    paths: ["scripts/**", "assets/fonts/**", ".github/workflows/perfil.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: perfil
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Banner y panel de estadísticas
+        run: node scripts/perfil.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Serpiente de contribuciones
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            assets/snake-light.svg?color_snake=#2f3dff&color_dots=#e2ded5,#9ec5f4,#5598e7,#256abf,#104281
+            assets/snake-dark.svg?color_snake=#7d85ff&color_dots=#2a2a27,#104281,#256abf,#5598e7,#9ec5f4
+
+      - name: Guardar las imágenes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets
+          if git diff --cached --quiet; then
+            echo "Sin cambios"
+          else
+            git commit -m "Actualizar estadísticas del perfil"
+            git push
+          fi
