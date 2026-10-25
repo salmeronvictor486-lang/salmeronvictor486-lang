@@ -6,7 +6,7 @@ on:
   workflow_dispatch: # botón "Run workflow" para actualizarlo a mano
   push:
     branches: [main]
-    paths: ["scripts/**", "assets/fonts/**", ".github/workflows/perfil.yml"]
+    paths: ["scripts/**", "assets/fonts/**", "assets/icons/**", "assets/3d-ajustes.json", ".github/workflows/perfil.yml"]
 
 permissions:
   contents: write
@@ -37,11 +37,20 @@ jobs:
             assets/snake-light.svg?color_snake=#2f3dff&color_dots=#e2ded5,#9ec5f4,#5598e7,#256abf,#104281
             assets/snake-dark.svg?color_snake=#7d85ff&color_dots=#2a2a27,#104281,#256abf,#5598e7,#9ec5f4
 
+      - name: Contribuciones en 3D
+        uses: yoshi389111/github-profile-3d-contrib@v0.9.3
+        continue-on-error: true # si falla, el resto del perfil se actualiza igual
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          SETTING_JSON: assets/3d-ajustes.json
+
       - name: Guardar las imágenes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets
+          if [ -d profile-3d-contrib ]; then git add profile-3d-contrib; fi
           if git diff --cached --quiet; then
             echo "Sin cambios"
           else

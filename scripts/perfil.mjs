@@ -1,5 +1,6 @@
-// Genera las imágenes del perfil de GitHub: el banner y el panel de estadísticas,
-// cada una en versión clara y oscura. La ejecuta cada día .github/workflows/perfil.yml.
+// Genera las imágenes del perfil de GitHub (banner, terminal, línea de tiempo, tecnologías,
+// panel de estadísticas y cierre), cada una en versión clara y oscura.
+// La ejecuta cada día .github/workflows/perfil.yml.
 //
 //   node scripts/perfil.mjs          → datos reales (necesita GITHUB_TOKEN)
 //   node scripts/perfil.mjs --mock   → datos de ejemplo, para probar el diseño
@@ -16,13 +17,13 @@ const MOCK = process.argv.includes("--mock");
 // ---------- Colores (los de victorsalmeron.dev + la escala azul para datos) ----------
 const THEMES = {
   light: {
-    bg: "#eeebe4", card: "#f6f4ef", line: "#d9d5cb", ink: "#121211", ink2: "#3d3c38",
+    name: "light", bg: "#eeebe4", card: "#f6f4ef", line: "#d9d5cb", ink: "#121211", ink2: "#3d3c38",
     accent: "#2f3dff", bar: "#2a78d6", track: "#e2ded5",
     // contribuciones: 0, y de menos a más (escala azul 200 → 650)
     levels: ["#e2ded5", "#9ec5f4", "#5598e7", "#256abf", "#104281"],
   },
   dark: {
-    bg: "#121211", card: "#1a1a19", line: "#2e2d2a", ink: "#eeebe4", ink2: "#b9b6ad",
+    name: "dark", bg: "#121211", card: "#1a1a19", line: "#2e2d2a", ink: "#eeebe4", ink2: "#b9b6ad",
     accent: "#7d85ff", bar: "#3987e5", track: "#2a2a27",
     // en oscuro, lo poco se funde con el fondo y lo mucho brilla (650 → 200)
     levels: ["#2a2a27", "#104281", "#256abf", "#5598e7", "#9ec5f4"],
@@ -31,10 +32,12 @@ const THEMES = {
 
 // ---------- Tipografías incrustadas (las de la web; licencia SIL OFL 1.1) ----------
 const font = (file) => readFileSync(join(ROOT, "assets/fonts", file)).toString("base64");
-const FONTS = `
-    @font-face { font-family: "Inter Tight"; font-weight: 100 900; src: url(data:font/woff2;base64,${font("inter-tight-var.woff2")}) format("woff2"); }
-    @font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url(data:font/woff2;base64,${font("jetbrains-mono-500.woff2")}) format("woff2"); }
-    @font-face { font-family: "Instrument Serif"; font-style: italic; src: url(data:font/woff2;base64,${font("instrument-serif-italic.woff2")}) format("woff2"); }`;
+// Cada imagen incrusta solo las tipografías que usa
+const FONTS = {
+  sans: `@font-face { font-family: "Inter Tight"; font-weight: 100 900; src: url(data:font/woff2;base64,${font("inter-tight-var.woff2")}) format("woff2"); }`,
+  mono: `@font-face { font-family: "JetBrains Mono"; font-weight: 500; src: url(data:font/woff2;base64,${font("jetbrains-mono-500.woff2")}) format("woff2"); }`,
+  serif: `@font-face { font-family: "Instrument Serif"; font-style: italic; src: url(data:font/woff2;base64,${font("instrument-serif-italic.woff2")}) format("woff2"); }`,
+};
 
 const SANS = `"Inter Tight", "Segoe UI", Helvetica, Arial, sans-serif`;
 const MONO = `"JetBrains Mono", Consolas, "Courier New", monospace`;
@@ -43,30 +46,205 @@ const SERIF = `"Instrument Serif", Georgia, serif`;
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const fmt = (n) => new Intl.NumberFormat("es-ES").format(n);
 
-function svg(width, height, t, body, title) {
+function svg(width, height, t, body, title, fonts = ["sans", "mono"], bg = t.bg) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(title)}">
   <title>${esc(title)}</title>
-  <style>${FONTS}
+  <style>
+    ${fonts.map((f) => FONTS[f]).join("\n    ")}
     .sans { font-family: ${SANS}; }
     .mono { font-family: ${MONO}; font-weight: 500; letter-spacing: .02em; text-transform: uppercase; }
+    .term { font-family: ${MONO}; font-weight: 500; }
     .serif { font-family: ${SERIF}; font-style: italic; }
   </style>
-  <rect width="${width}" height="${height}" rx="14" fill="${t.bg}"/>
+  <rect width="${width}" height="${height}" rx="14" fill="${bg}"/>
 ${body}
 </svg>
 `;
 }
 
+// Texto que se "escribe" letra a letra: un recorte que crece al ritmo de cada carácter.
+// JetBrains Mono mide 0,6 em por carácter, así que el ancho de cada letra es exacto.
+let clipId = 0;
+function typed(x, y, str, size, fill, begin, step = 0.05) {
+  const id = `c${++clipId}`, cw = size * 0.6, n = [...str].length;
+  const widths = Array.from({ length: n + 1 }, (_, k) => (k * cw).toFixed(1)).join(";");
+  return `  <clipPath id="${id}"><rect x="${x}" y="${y - size}" width="0" height="${size * 1.5}">
+    <animate attributeName="width" values="${widths}" begin="${begin}s" dur="${(n * step).toFixed(2)}s" calcMode="discrete" fill="freeze"/>
+  </rect></clipPath>
+  <text x="${x}" y="${y}" class="term" font-size="${size}" fill="${fill}" clip-path="url(#${id})" xml:space="preserve">${esc(str)}</text>`;
+}
+// Algo que aparece de golpe en el segundo indicado
+const appear = (begin, inner) => `  <g opacity="0"><set attributeName="opacity" to="1" begin="${begin}s" fill="freeze"/>\n${inner}\n  </g>`;
+
 // ---------- Banner ----------
+const ROLES = ["Help Desk y soporte técnico", "Sistemas Windows y Linux", "Redes y ciberseguridad", "Estudiante de DAM + ASIR", "Desarrollo con IA (Claude Code)"];
+
+// Línea que escribe y borra cada perfil en bucle
+function rolesLine(x, y, size, t) {
+  const cw = size * 0.6, step = 0.06, hold = 1.8, gap = 0.4;
+  const spans = ROLES.map((r) => [...r].length * step + hold + gap);
+  const T = spans.reduce((a, b) => a + b, 0);
+  let start = 0, out = "";
+  ROLES.forEach((role, i) => {
+    const n = [...role].length, kt = [0], wv = [0];
+    const push = (time, w) => { const k = Math.min(1, time / T); if (k > kt[kt.length - 1]) { kt.push(+k.toFixed(5)); wv.push(w); } };
+    push(start, 0);
+    for (let k = 1; k <= n; k++) push(start + k * step, +(k * cw).toFixed(1));
+    push(start + n * step + hold, 0);
+    if (kt[kt.length - 1] < 1) { kt.push(1); wv.push(0); }
+    const id = `r${i}`;
+    out += `  <clipPath id="${id}"><rect x="${x}" y="${y - size}" width="0" height="${size * 1.5}">
+    <animate attributeName="width" values="${wv.join(";")}" keyTimes="${kt.join(";")}" dur="${T.toFixed(2)}s" calcMode="discrete" repeatCount="indefinite"/>
+  </rect></clipPath>
+  <text x="${x}" y="${y}" class="term" font-size="${size}" fill="${t.ink}" clip-path="url(#${id})">${esc(role)}</text>
+  <rect x="${x}" y="${y - size * 0.8}" width="${(size * 0.55).toFixed(1)}" height="${size}" fill="${t.accent}" opacity="0">
+    <animate attributeName="x" values="${wv.map((w) => (x + w + 2).toFixed(1)).join(";")}" keyTimes="${kt.join(";")}" dur="${T.toFixed(2)}s" calcMode="discrete" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="${wv.map((w) => (w > 0 ? 1 : 0)).join(";")}" keyTimes="${kt.join(";")}" dur="${T.toFixed(2)}s" calcMode="discrete" repeatCount="indefinite"/>
+  </rect>\n`;
+    start += spans[i];
+  });
+  return out;
+}
+
 function banner(t) {
-  const W = 880, H = 270;
+  const W = 880, H = 312;
   const body = `
   <text x="40" y="44" class="mono" font-size="12" fill="${t.ink2}">Terrassa, Barcelona</text>
   <text x="${W - 40}" y="44" class="mono" font-size="12" fill="${t.accent}" text-anchor="end">victorsalmeron.dev</text>
-  <text x="34" y="150" class="sans" font-size="96" font-weight="700" letter-spacing="-4.8" fill="${t.ink}">Víctor Salmerón<tspan fill="${t.accent}">.</tspan></text>
+  <text x="34" y="150" class="sans" font-size="96" font-weight="700" letter-spacing="-4.8" fill="${t.ink}">Víctor Salmerón<tspan fill="${t.accent}">.<animate attributeName="fill-opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></tspan></text>
   <text x="40" y="206" class="sans" font-size="24" font-weight="450" letter-spacing="-.4" fill="${t.ink}">Técnico informático que <tspan class="serif" font-size="27">aprende haciendo</tspan>.</text>
-  <text x="40" y="238" class="sans" font-size="24" font-weight="450" letter-spacing="-.4" fill="${t.ink2}">Soporte IT, sistemas y, cada día un poco más, desarrollo.</text>`;
-  return svg(W, H, t, body, "Víctor Salmerón. Técnico informático que aprende haciendo. Soporte IT, sistemas y, cada día un poco más, desarrollo.");
+  <text x="40" y="238" class="sans" font-size="24" font-weight="450" letter-spacing="-.4" fill="${t.ink2}">Soporte IT, sistemas y, cada día un poco más, desarrollo.</text>
+  <line x1="40" y1="258" x2="${W - 40}" y2="258" stroke="${t.line}"/>
+  <text x="40" y="288" class="term" font-size="17" fill="${t.accent}">&gt;</text>
+${rolesLine(62, 288, 17, t)}`;
+  return svg(W, H, t, body, "Víctor Salmerón. Técnico informático que aprende haciendo. Soporte IT, sistemas y, cada día un poco más, desarrollo. " + ROLES.join(" · "), ["sans", "mono", "serif"]);
+}
+
+// ---------- Terminal "whoami" ----------
+// Solo datos reales del CV. Los comandos se escriben y las respuestas aparecen después.
+const SESSION = [
+  ["whoami", ["Víctor Salmerón Gavilán — técnico IT · Help Desk · sistemas"]],
+  ["cat formacion.txt", ["CFGM SMR · Salesians Terrassa (2024–2026) · nota media 8", "CFGS DAM + ASIR · Colegio Vedruna Vall (2026 → hoy)"]],
+  ["systemctl status experiencia", ["● casarramona.service — Técnico informático (formación dual)", "   Active: completed · oct 2025 → jun 2026 (9 meses)"]],
+  ["ping oportunidades", ["Buscando prácticas o puesto junior en soporte IT, sistemas o desarrollo"]],
+];
+
+function terminal(t) {
+  const W = 880, size = 15, lh = 25, x = 32, top = 84;
+  const bg = t.name === "light" ? "#121211" : "#1a1a19", fg = "#eeebe4", dim = "#b9b6ad", acc = "#7d85ff", ok = "#4fd1a5";
+  const prompt = "victor@terrassa:~$ ";
+  let y = top, time = 0.6, body = "";
+  body += `  <rect x=".5" y=".5" width="${W - 1}" height="HEIGHT" rx="14" fill="${bg}" stroke="${t.name === "light" ? "#121211" : "#2e2d2a"}"/>
+  <circle cx="28" cy="26" r="6" fill="#3d3c38"/><circle cx="48" cy="26" r="6" fill="#3d3c38"/><circle cx="68" cy="26" r="6" fill="#3d3c38"/>
+  <text x="${W / 2}" y="31" class="term" font-size="13" fill="${dim}" text-anchor="middle">victor@terrassa: ~ — bash</text>
+  <line x1="0" y1="52" x2="${W}" y2="52" stroke="#2e2d2a"/>\n`;
+  for (const [cmd, lines] of SESSION) {
+    body += appear(time, `  <text x="${x}" y="${y}" class="term" font-size="${size}" fill="${acc}">${esc(prompt)}</text>`) + "\n";
+    body += typed(x + [...prompt].length * size * 0.6, y, cmd, size, fg, time + 0.25) + "\n";
+    time += 0.25 + [...cmd].length * 0.05 + 0.35;
+    y += lh;
+    for (const line of lines) {
+      const color = line.startsWith("●") ? ok : line.startsWith("   ") ? dim : fg;
+      body += appear(time, `  <text x="${x}" y="${y}" class="term" font-size="${size}" fill="${color}" xml:space="preserve">${esc(line)}</text>`) + "\n";
+      time += 0.12; y += lh;
+    }
+    time += 0.5; y += 8;
+  }
+  body += appear(time, `  <text x="${x}" y="${y}" class="term" font-size="${size}" fill="${acc}">${esc(prompt)}</text>
+  <rect x="${(x + [...prompt].length * size * 0.6).toFixed(1)}" y="${y - size * 0.8}" width="${(size * 0.55).toFixed(1)}" height="${size}" fill="${fg}">
+    <animate attributeName="opacity" values="1;0" dur="1.1s" calcMode="discrete" repeatCount="indefinite"/>
+  </rect>`) + "\n";
+  const H = y + 30;
+  const text = SESSION.map(([c, l]) => `$ ${c}\n${l.join("\n")}`).join("\n");
+  return svg(W, H, t, body.replace("HEIGHT", H - 1), "Terminal: " + text, ["mono"], "none");
+}
+
+// ---------- Línea de tiempo ----------
+const STEPS = [
+  ["2024", "CFGM SMR", "Salesians Terrassa", "past"],
+  ["2025", "Técnico informático", "CASARRAMONA · 9 meses", "past"],
+  ["2026", "SMR terminado", "Nota media 8", "past"],
+  ["Ahora", "DAM + ASIR", "Colegio Vedruna Vall", "now"],
+  ["Objetivo", "Ingeniería Informática", "Después de DAM (2028)", "future"],
+];
+
+function timeline(t) {
+  const W = 880, H = 200, pad = 40, ly = 92, col = (W - pad * 2) / STEPS.length;
+  let body = `  <text x="${pad}" y="40" class="mono" font-size="12" fill="${t.ink2}">Mi camino</text>\n`;
+  const cx = (i) => pad + col * i + col / 2;
+  const nowX = cx(STEPS.findIndex((s) => s[3] === "now"));
+  body += `  <line x1="${cx(0)}" y1="${ly}" x2="${nowX}" y2="${ly}" stroke="${t.accent}" stroke-width="2"/>
+  <line x1="${nowX}" y1="${ly}" x2="${cx(STEPS.length - 1)}" y2="${ly}" stroke="${t.ink2}" stroke-width="2" stroke-dasharray="4 6" opacity=".6"/>\n`;
+  STEPS.forEach(([year, title, sub, state], i) => {
+    const x = cx(i);
+    body += `  <text x="${x}" y="${ly - 22}" class="mono" font-size="12" fill="${state === "now" ? t.accent : t.ink2}" text-anchor="middle">${esc(year)}</text>\n`;
+    if (state === "now") {
+      body += `  <circle cx="${x}" cy="${ly}" r="9" fill="none" stroke="${t.accent}" stroke-width="2">
+    <animate attributeName="r" values="9;18" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values=".8;0" dur="1.8s" repeatCount="indefinite"/>
+  </circle>\n  <circle cx="${x}" cy="${ly}" r="8" fill="${t.accent}"/>\n`;
+    } else if (state === "past") {
+      body += `  <circle cx="${x}" cy="${ly}" r="6" fill="${t.accent}"/>\n`;
+    } else {
+      body += `  <circle cx="${x}" cy="${ly}" r="6" fill="${t.bg}" stroke="${t.ink2}" stroke-width="2"/>\n`;
+    }
+    body += `  <text x="${x}" y="${ly + 40}" class="sans" font-size="16" font-weight="650" fill="${t.ink}" text-anchor="middle">${esc(title)}</text>
+  <text x="${x}" y="${ly + 62}" class="sans" font-size="13" fill="${t.ink2}" text-anchor="middle">${esc(sub)}</text>\n`;
+  });
+  return svg(W, H, t, body, "Mi camino: " + STEPS.map((s) => `${s[0]}: ${s[1]} (${s[2]})`).join(" → "));
+}
+
+// ---------- Tecnologías ----------
+// Logos de Simple Icons (CC0) en assets/icons; los de Microsoft ya no están allí, así que
+// Windows, Windows Server y Office llevan iconos genéricos dibujados aquí.
+const icon = (name) => readFileSync(join(ROOT, "assets/icons", `${name}.svg`), "utf8").match(/ d="([^"]+)"/)[1];
+const GENERIC = {
+  desktop: `<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>`,
+  server: `<rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/><path d="M7 6.5h.01M7 17.5h.01"/>`,
+  network: `<circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M10.8 7.2 6.2 16.8M13.2 7.2l4.6 9.6M7.5 19h9"/>`,
+  shield: `<path d="M12 2 20 5v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="m9 12 2 2 4-4"/>`,
+  backup: `<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>`,
+  document: `<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h7"/>`,
+};
+const STACK = [
+  ["Sistemas y redes", [["Windows 10/11", "desktop"], ["Windows Server", "server"], ["Linux", "linux"], ["Ubuntu", "ubuntu"], ["Redes LAN", "network"], ["Ciberseguridad", "shield"], ["Backups", "backup"]]],
+  ["Desarrollo", [["C++", "cplusplus"], ["Rust", "rust"], ["TypeScript", "typescript"], ["JavaScript", "javascript"], ["React", "react"], ["Tauri", "tauri"], ["SQLite", "sqlite"], ["HTML y CSS", "html5"]]],
+  ["Herramientas", [["Git", "git"], ["GitHub", "github"], ["GitHub Actions", "githubactions"], ["Cloudflare", "cloudflare"], ["Claude Code", "claude"], ["Office", "document"]]],
+];
+
+function stack(t) {
+  const W = 880, pad = 40, gap = 10, tw = (W - pad * 2 - gap * 7) / 8, th = 88;
+  let y = 30, body = "";
+  for (const [group, items] of STACK) {
+    body += `  <text x="${pad}" y="${y + 14}" class="mono" font-size="12" fill="${t.accent}">${esc(group)}</text>\n`;
+    y += 28;
+    items.forEach(([label, ic], i) => {
+      const x = pad + i * (tw + gap);
+      const glyph = GENERIC[ic]
+        ? `<g transform="translate(${(x + tw / 2 - 14).toFixed(1)} ${y + 16}) scale(${28 / 24})" fill="none" stroke="${t.ink}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${GENERIC[ic]}</g>`
+        : `<path transform="translate(${(x + tw / 2 - 14).toFixed(1)} ${y + 16}) scale(${28 / 24})" d="${icon(ic)}" fill="${t.ink}"/>`;
+      body += `  <g>
+    <rect x="${x.toFixed(1)}" y="${y}" width="${tw.toFixed(1)}" height="${th}" rx="10" fill="${t.card}" stroke="${t.line}"/>
+    ${glyph}
+    <text x="${(x + tw / 2).toFixed(1)}" y="${y + 70}" class="sans" font-size="12" fill="${t.ink2}" text-anchor="middle">${esc(label)}</text>
+  </g>\n`;
+    });
+    y += th + 26;
+  }
+  return svg(W, y + 4, t, body, "Tecnologías. " + STACK.map(([g, it]) => `${g}: ${it.map((i) => i[0]).join(", ")}`).join(". "));
+}
+
+// ---------- Cierre ----------
+function footer(t) {
+  const W = 880, H = 230;
+  const bg = t.name === "light" ? "#121211" : "#1a1a19", fg = "#eeebe4", dim = "#b9b6ad", acc = "#8f97ff";
+  const body = `  <rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="14" fill="${bg}" stroke="${t.name === "light" ? "#121211" : "#2e2d2a"}"/>
+  <text x="40" y="48" class="mono" font-size="12" fill="${acc}">Contacto</text>
+  <text x="34" y="128" class="sans" font-size="76" font-weight="700" letter-spacing="-3.6" fill="${fg}">¿Hablamos?</text>
+  <text x="40" y="168" class="sans" font-size="18" fill="${dim}">Abierto a prácticas, formación dual y oportunidades junior en soporte IT,</text>
+  <text x="40" y="192" class="sans" font-size="18" fill="${dim}">sistemas o desarrollo en Terrassa, Barcelona y alrededores.</text>
+  <text x="${W - 40}" y="128" class="sans" font-size="20" font-weight="600" fill="${acc}" text-anchor="end">victorsalmeron.dev ↗</text>`;
+  return svg(W, H, t, body, "¿Hablamos? Abierto a prácticas, formación dual y oportunidades junior en soporte IT, sistemas o desarrollo en Terrassa, Barcelona y alrededores. victorsalmeron.dev", ["sans", "mono"], "none");
 }
 
 // ---------- Datos ----------
@@ -243,6 +421,10 @@ const updated = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short
 mkdirSync(OUT, { recursive: true });
 for (const [name, t] of Object.entries(THEMES)) {
   writeFileSync(join(OUT, `banner-${name}.svg`), banner(t));
+  writeFileSync(join(OUT, `terminal-${name}.svg`), terminal(t));
+  writeFileSync(join(OUT, `camino-${name}.svg`), timeline(t));
+  writeFileSync(join(OUT, `tecnologias-${name}.svg`), stack(t));
+  writeFileSync(join(OUT, `contacto-${name}.svg`), footer(t));
   writeFileSync(join(OUT, `dashboard-${name}.svg`), dashboard(t, data, updated));
 }
 console.log("Imágenes generadas:", { contribuciones: data.total, commits: data.commits, racha: data.current, mejor: data.best, lenguajes: data.langs.map((l) => l.name).join(", ") });

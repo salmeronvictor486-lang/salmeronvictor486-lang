@@ -9,50 +9,35 @@
   <a href="https://victorsalmeron.dev/"><img alt="Web: victorsalmeron.dev" src="https://img.shields.io/badge/victorsalmeron.dev-2f3dff?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://www.linkedin.com/in/v%C3%ADctor-salmer%C3%B3n-gavil%C3%A1n-a3845b3b8/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
   <a href="https://victorsalmeron.dev/cv/cv-victor-salmeron-helpdesk.pdf"><img alt="Descargar CV (PDF)" src="https://img.shields.io/badge/CV-PDF-121211?style=for-the-badge&logo=readdotcv&logoColor=white"></a>
+  <a href="https://victorsalmeron.dev/cv/cv-victor-salmeron-helpdesk-en.pdf"><img alt="Download résumé (PDF, English)" src="https://img.shields.io/badge/CV-English-121211?style=for-the-badge&logo=readdotcv&logoColor=white"></a>
 </p>
 
-## Sobre mí
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/terminal-dark.svg">
+  <img alt="Terminal. $ whoami: Víctor Salmerón Gavilán, técnico IT, Help Desk y sistemas. $ cat formacion.txt: CFGM SMR en Salesians Terrassa (2024–2026), nota media 8; CFGS DAM + ASIR en el Colegio Vedruna Vall (2026 → hoy). $ systemctl status experiencia: técnico informático en CASARRAMONA (formación dual), de octubre de 2025 a junio de 2026 (9 meses). $ ping oportunidades: buscando prácticas o puesto junior en soporte IT, sistemas o desarrollo." src="assets/terminal-light.svg" width="100%">
+</picture>
 
-- 🛠️ Técnico en Sistemas Microinformáticos y Redes (SMR, nota media 8) con **9 meses de experiencia** en soporte IT / Help Desk en CASARRAMONA Informàtica.
-- 🎓 Estudio **DAM y ASIR a la vez** en el Colegio Vedruna Vall (Terrassa). Mi objetivo: Ingeniería Informática.
-- 🔎 Busco prácticas y oportunidades junior en **soporte IT, sistemas o desarrollo** en Terrassa, Barcelona y alrededores.
-- 🤖 Desarrollo mis proyectos con IA (Claude Code) como herramienta: yo los ideo, reviso los cambios, los pruebo y los publico.
+### ⚡ Ahora mismo
+
+- 🎓 Estudiando **DAM y ASIR a la vez** en el Colegio Vedruna Vall (Terrassa).
+- 🧠 Aprendiendo **C++** y mejorando en sistemas Windows y Linux.
+- 🤖 Desarrollando **TICO**, mi asistente de escritorio con IA.
+- 🔎 Buscando **prácticas o mi primer puesto junior** en soporte IT, sistemas o desarrollo.
 - 🗣️ Castellano y catalán nativos · inglés B2.
 
-## Tecnologías
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/camino-dark.svg">
+  <img alt="Mi camino: 2024, CFGM SMR en Salesians Terrassa → 2025, técnico informático en CASARRAMONA (9 meses) → 2026, SMR terminado con nota media 8 → ahora, DAM + ASIR en el Colegio Vedruna Vall → objetivo: Ingeniería Informática después de DAM (2028)." src="assets/camino-light.svg" width="100%">
+</picture>
 
-**Sistemas**
-<br>
-<img alt="Windows" src="https://img.shields.io/badge/Windows_10%2F11-121211?style=flat-square">
-<img alt="Windows Server" src="https://img.shields.io/badge/Windows_Server-121211?style=flat-square">
-<img alt="Linux" src="https://img.shields.io/badge/Linux-121211?style=flat-square&logo=linux&logoColor=white">
-<img alt="Ubuntu" src="https://img.shields.io/badge/Ubuntu-121211?style=flat-square&logo=ubuntu&logoColor=white">
-<img alt="Copias de seguridad" src="https://img.shields.io/badge/Copias_de_seguridad-121211?style=flat-square">
-<img alt="Microsoft Office" src="https://img.shields.io/badge/Microsoft_Office-121211?style=flat-square">
+### 🧰 Tecnologías
 
-**Redes y seguridad**
-<br>
-<img alt="TCP/IP" src="https://img.shields.io/badge/TCP%2FIP-121211?style=flat-square">
-<img alt="DHCP" src="https://img.shields.io/badge/DHCP-121211?style=flat-square">
-<img alt="DNS" src="https://img.shields.io/badge/DNS-121211?style=flat-square">
-<img alt="LAN" src="https://img.shields.io/badge/Redes_LAN-121211?style=flat-square">
-<img alt="Antivirus" src="https://img.shields.io/badge/Antivirus_y_ciberseguridad-121211?style=flat-square">
-<img alt="Cloudflare" src="https://img.shields.io/badge/Cloudflare-121211?style=flat-square&logo=cloudflare&logoColor=white">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/tecnologias-dark.svg">
+  <img alt="Tecnologías. Sistemas y redes: Windows 10/11, Windows Server, Linux, Ubuntu, redes LAN, ciberseguridad y backups. Desarrollo: C++, Rust, TypeScript, JavaScript, React, Tauri, SQLite, HTML y CSS. Herramientas: Git, GitHub, GitHub Actions, Cloudflare, Claude Code y Office." src="assets/tecnologias-light.svg" width="100%">
+</picture>
 
-**Desarrollo**
-<br>
-<img alt="C++" src="https://img.shields.io/badge/C%2B%2B-121211?style=flat-square&logo=cplusplus&logoColor=white">
-<img alt="Rust" src="https://img.shields.io/badge/Rust-121211?style=flat-square&logo=rust&logoColor=white">
-<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-121211?style=flat-square&logo=typescript&logoColor=white">
-<img alt="React" src="https://img.shields.io/badge/React-121211?style=flat-square&logo=react&logoColor=white">
-<img alt="Tauri" src="https://img.shields.io/badge/Tauri-121211?style=flat-square&logo=tauri&logoColor=white">
-<img alt="SQL" src="https://img.shields.io/badge/SQL_%C2%B7_SQLite-121211?style=flat-square&logo=sqlite&logoColor=white">
-<img alt="HTML y CSS" src="https://img.shields.io/badge/HTML_%C2%B7_CSS-121211?style=flat-square&logo=html5&logoColor=white">
-<img alt="Git" src="https://img.shields.io/badge/Git-121211?style=flat-square&logo=git&logoColor=white">
-<img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub_Actions-121211?style=flat-square&logo=githubactions&logoColor=white">
-<img alt="Claude Code" src="https://img.shields.io/badge/Claude_Code-121211?style=flat-square&logo=claude&logoColor=white">
-
-## Proyectos
+### 🚀 Proyectos
 
 <table>
   <tr>
@@ -83,7 +68,7 @@
   </tr>
 </table>
 
-## Actividad
+### 📊 Actividad
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/dashboard-dark.svg">
@@ -91,8 +76,26 @@
 </picture>
 
 <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="profile-3d-contrib/3d-dark.svg">
+  <img alt="Contribuciones del último año en 3D, con los lenguajes y el tipo de actividad" src="profile-3d-contrib/3d-light.svg" width="100%">
+</picture>
+
+<picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/snake-dark.svg">
   <img alt="Animación: una serpiente recorre el mapa de contribuciones" src="assets/snake-light.svg" width="100%">
 </picture>
 
-<sub>El panel y la serpiente se actualizan solos cada día con GitHub Actions (<code>scripts/perfil.mjs</code>).</sub>
+<br>
+
+<a href="https://victorsalmeron.dev/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/contacto-dark.svg">
+    <img alt="¿Hablamos? Abierto a prácticas, formación dual y oportunidades junior en soporte IT, sistemas o desarrollo en Terrassa, Barcelona y alrededores. victorsalmeron.dev" src="assets/contacto-light.svg" width="100%">
+  </picture>
+</a>
+
+<p align="center">
+  <img alt="Visitas al perfil" src="https://komarev.com/ghpvc/?username=salmeronvictor486-lang&label=Visitas%20al%20perfil&color=2f3dff&style=flat-square">
+  <br>
+  <sub>Todas las imágenes se generan con <code>scripts/perfil.mjs</code> y se actualizan solas cada día con GitHub Actions.</sub>
+</p>
