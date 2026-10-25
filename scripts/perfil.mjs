@@ -234,7 +234,7 @@ function dashboard(t, s, updated) {
 
   const H = sy + 22 + Math.max(s.langs.length, 4) * rowH + 24;
   return svg(W, H, t, parts.join("\n"),
-    `Actividad en GitHub: ${s.total} contribuciones y ${s.commits} commits en el último año; racha actual de ${s.current} días y mejor racha de ${s.best}.`);
+    `Actividad en GitHub: ${s.total} contribuciones y ${s.commits} commits en el último año; racha actual de ${s.current} ${s.current === 1 ? "día" : "días"} y mejor racha de ${s.best} ${s.best === 1 ? "día" : "días"}.`);
 }
 
 // ---------- Salida ----------
