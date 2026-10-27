@@ -9,7 +9,7 @@
   <a href="https://victorsalmeron.dev/"><img alt="Web: victorsalmeron.dev" src="https://img.shields.io/badge/victorsalmeron.dev-2f3dff?style=for-the-badge&logo=googlechrome&logoColor=white"></a>
   <a href="https://www.linkedin.com/in/v%C3%ADctor-salmer%C3%B3n-gavil%C3%A1n-a3845b3b8/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"></a>
   <a href="https://victorsalmeron.dev/cv/cv-victor-salmeron-helpdesk.pdf"><img alt="Descargar CV (PDF)" src="https://img.shields.io/badge/CV-PDF-121211?style=for-the-badge&logo=readdotcv&logoColor=white"></a>
-  <a href="https://victorsalmeron.dev/cv/cv-victor-salmeron-helpdesk-en.pdf"><img alt="Download résumé (PDF, English)" src="https://img.shields.io/badge/CV-English-121211?style=for-the-badge&logo=readdotcv&logoColor=white"></a>
+  <a href="https://victorsalmeron.dev/cv/cv-victor-salmeron-helpdesk-en.pdf"><img alt="Download CV (PDF, English)" src="https://img.shields.io/badge/CV-English-121211?style=for-the-badge&logo=readdotcv&logoColor=white"></a>
 </p>
 
 <picture>
