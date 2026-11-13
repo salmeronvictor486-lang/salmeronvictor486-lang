@@ -10,7 +10,7 @@
   </style>
   <rect width="880" height="574" rx="14" fill="#eeebe4"/>
   <text x="40" y="44" class="mono" font-size="12" fill="#3d3c38" >Actividad en GitHub</text>
-  <text x="840" y="44" class="mono" font-size="12" fill="#3d3c38" text-anchor="end">Actualizado: 12 nov 2026</text>
+  <text x="840" y="44" class="mono" font-size="12" fill="#3d3c38" text-anchor="end">Actualizado: 13 nov 2026</text>
   <rect x="40" y="64" width="189.5" height="104" rx="10" fill="#f6f4ef" stroke="#d9d5cb"/>
   <text x="58" y="92" class="mono" font-size="11" fill="#3d3c38" >último año</text>
   <text x="58" y="138" class="sans" font-size="40" fill="#2f3dff" font-weight="700" letter-spacing="-1.6">222</text>
@@ -408,6 +408,7 @@
   <rect x="798" y="264" width="11" height="11" rx="2" fill="#e2ded5"/>
   <rect x="798" y="278" width="11" height="11" rx="2" fill="#e2ded5"/>
   <rect x="798" y="292" width="11" height="11" rx="2" fill="#e2ded5"/>
+  <rect x="798" y="306" width="11" height="11" rx="2" fill="#e2ded5"/>
   <text x="40" y="259.5" class="sans" font-size="11" fill="#3d3c38" >lun</text>
   <text x="40" y="287.5" class="sans" font-size="11" fill="#3d3c38" >mié</text>
   <text x="40" y="315.5" class="sans" font-size="11" fill="#3d3c38" >vie</text>
