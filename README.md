@@ -14,12 +14,13 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/terminal-dark.svg">
-  <img alt="Terminal. $ whoami: Víctor Salmerón Gavilán, técnico IT, Help Desk y sistemas. $ cat formacion.txt: CFGM SMR en Salesians Terrassa (2024–2026), nota media 8; CFGS DAM + ASIR en el Colegio Vedruna Vall (2026 → hoy). $ systemctl status experiencia: técnico informático en CASARRAMONA (formación dual), de octubre de 2025 a junio de 2026 (9 meses). $ ping oportunidades: buscando prácticas o puesto junior en soporte IT, sistemas o desarrollo." src="assets/terminal-light.svg" width="100%">
+  <img alt="Terminal. $ whoami: Víctor Salmerón Gavilán, técnico IT, Help Desk y sistemas. $ cat formacion.txt: CFGM SMR en Salesians (2024–2026), nota media 8; CFGS DAM + ASIR en el Colegio Vedruna Vall (2026 → hoy). $ cat homelab.txt: Raspberry Pi 5 con Pi-hole (DNS con bloqueo de anuncios) y servidor NAS, en curso. $ systemctl status experiencia: técnico informático en CASARRAMONA (formación dual), de octubre de 2025 a junio de 2026 (9 meses). $ ping oportunidades: buscando prácticas o puesto junior en soporte IT, sistemas o desarrollo." src="assets/terminal-light.svg" width="100%">
 </picture>
 
 ### ⚡ Ahora mismo
 
-- 🎓 Estudiando **DAM y ASIR a la vez** en el Colegio Vedruna Vall (Terrassa).
+- 🎓 Estudiando **DAM y ASIR a la vez** en el Colegio Vedruna Vall (Barcelona).
+- 🏠 Montando mi **homelab** con una Raspberry Pi 5: Pi-hole para bloquear anuncios en toda la red y un servidor NAS.
 - 🧠 Aprendiendo **C++** y mejorando en sistemas Windows y Linux.
 - 🤖 Desarrollando **TICO**, mi asistente de escritorio con IA.
 - 🔎 Buscando **prácticas o mi primer puesto junior** en soporte IT, sistemas o desarrollo.
@@ -27,19 +28,30 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/camino-dark.svg">
-  <img alt="Mi camino: 2024, CFGM SMR en Salesians Terrassa → 2025, técnico informático en CASARRAMONA (9 meses) → 2026, SMR terminado con nota media 8 → ahora, DAM + ASIR en el Colegio Vedruna Vall → objetivo: Ingeniería Informática después de DAM (2028)." src="assets/camino-light.svg" width="100%">
+  <img alt="Mi camino: 2024, CFGM SMR en Salesians → 2025, técnico informático en CASARRAMONA (9 meses) → 2026, SMR terminado con nota media 8 → ahora, DAM + ASIR en el Colegio Vedruna Vall → objetivo: Ingeniería Informática después de DAM (2028)." src="assets/camino-light.svg" width="100%">
 </picture>
 
 ### 🧰 Tecnologías
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/tecnologias-dark.svg">
-  <img alt="Tecnologías. Sistemas y redes: Windows 10/11, Windows Server, Linux, Ubuntu, redes LAN, ciberseguridad y backups. Desarrollo: C++, Rust, TypeScript, JavaScript, React, Tauri, SQLite, HTML y CSS. Herramientas: Git, GitHub, GitHub Actions, Cloudflare, Claude Code y Office." src="assets/tecnologias-light.svg" width="100%">
+  <img alt="Tecnologías. Sistemas y redes: Windows 10/11, Windows Server, Linux, Ubuntu, Raspberry Pi, redes LAN, ciberseguridad y backups. Desarrollo: C++, Rust, TypeScript, JavaScript, React, Tauri, SQLite, HTML y CSS. Herramientas: Git, GitHub, GitHub Actions, Cloudflare, Pi-hole, Claude Code y Office." src="assets/tecnologias-light.svg" width="100%">
 </picture>
 
 ### 🚀 Proyectos
 
 <table>
+  <tr>
+    <td width="42%"><img alt="Raspberry Pi 5 con ventilador activo y en su caja oficial, junto a la salida del comando pihole status" src="assets/homelab.webp"></td>
+    <td>
+      <b>Homelab · Raspberry Pi 5</b> <sub>(en curso)</sub><br>
+      Mi propio servidor en casa: una Raspberry Pi 5 de 4 GB, montada por mí con refrigeración activa.
+      <br><br>
+      <b>Pi-hole</b> como servidor DNS de la red para bloquear anuncios y rastreadores en todos los dispositivos, y un <b>servidor NAS</b> para guardar y compartir archivos por la red local.
+      <br><br>
+      <code>Raspberry Pi 5</code> <code>Linux</code> <code>Pi-hole</code> <code>DNS</code> <code>NAS</code>
+    </td>
+  </tr>
   <tr>
     <td width="42%"><a href="https://github.com/salmeronvictor486-lang/TICO-AI-ASSITANT"><img alt="TICO: un pequeño robot blanco con ojos turquesa" src="assets/tico.jpg"></a></td>
     <td>
@@ -90,7 +102,7 @@
 <a href="https://victorsalmeron.dev/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/contacto-dark.svg">
-    <img alt="¿Hablamos? Abierto a prácticas, formación dual y oportunidades junior en soporte IT, sistemas o desarrollo en Terrassa, Barcelona y alrededores. victorsalmeron.dev" src="assets/contacto-light.svg" width="100%">
+    <img alt="¿Hablamos? Abierto a prácticas, formación dual y oportunidades junior en soporte IT, sistemas o desarrollo en Barcelona y alrededores. victorsalmeron.dev" src="assets/contacto-light.svg" width="100%">
   </picture>
 </a>
 

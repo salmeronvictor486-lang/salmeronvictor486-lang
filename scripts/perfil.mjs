@@ -77,7 +77,7 @@ function typed(x, y, str, size, fill, begin, step = 0.05) {
 const appear = (begin, inner) => `  <g opacity="0"><set attributeName="opacity" to="1" begin="${begin}s" fill="freeze"/>\n${inner}\n  </g>`;
 
 // ---------- Banner ----------
-const ROLES = ["Help Desk y soporte técnico", "Sistemas Windows y Linux", "Redes y ciberseguridad", "Estudiante de DAM + ASIR", "Desarrollo con IA (Claude Code)"];
+const ROLES = ["Help Desk y soporte técnico", "Sistemas Windows y Linux", "Redes y ciberseguridad", "Homelab con Raspberry Pi 5", "Estudiante de DAM + ASIR", "Desarrollo con IA (Claude Code)"];
 
 // Línea que escribe y borra cada perfil en bucle
 function rolesLine(x, y, size, t) {
@@ -109,7 +109,7 @@ function rolesLine(x, y, size, t) {
 function banner(t) {
   const W = 880, H = 312;
   const body = `
-  <text x="40" y="44" class="mono" font-size="12" fill="${t.ink2}">Terrassa, Barcelona</text>
+  <text x="40" y="44" class="mono" font-size="12" fill="${t.ink2}">Barcelona</text>
   <text x="${W - 40}" y="44" class="mono" font-size="12" fill="${t.accent}" text-anchor="end">victorsalmeron.dev</text>
   <text x="34" y="150" class="sans" font-size="96" font-weight="700" letter-spacing="-4.8" fill="${t.ink}">Víctor Salmerón<tspan fill="${t.accent}">.<animate attributeName="fill-opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></tspan></text>
   <text x="40" y="206" class="sans" font-size="24" font-weight="450" letter-spacing="-.4" fill="${t.ink}">Técnico informático que <tspan class="serif" font-size="27">aprende haciendo</tspan>.</text>
@@ -124,19 +124,20 @@ ${rolesLine(62, 288, 17, t)}`;
 // Solo datos reales del CV. Los comandos se escriben y las respuestas aparecen después.
 const SESSION = [
   ["whoami", ["Víctor Salmerón Gavilán — técnico IT · Help Desk · sistemas"]],
-  ["cat formacion.txt", ["CFGM SMR · Salesians Terrassa (2024–2026) · nota media 8", "CFGS DAM + ASIR · Colegio Vedruna Vall (2026 → hoy)"]],
+  ["cat formacion.txt", ["CFGM SMR · Salesians (2024–2026) · nota media 8", "CFGS DAM + ASIR · Colegio Vedruna Vall (2026 → hoy)"]],
   ["systemctl status experiencia", ["● casarramona.service — Técnico informático (formación dual)", "   Active: completed · oct 2025 → jun 2026 (9 meses)"]],
+  ["cat homelab.txt", ["Raspberry Pi 5 · Pi-hole (DNS con bloqueo de anuncios) · servidor NAS — en curso"]],
   ["ping oportunidades", ["Buscando prácticas o puesto junior en soporte IT, sistemas o desarrollo"]],
 ];
 
 function terminal(t) {
   const W = 880, size = 15, lh = 25, x = 32, top = 84;
   const bg = t.name === "light" ? "#121211" : "#1a1a19", fg = "#eeebe4", dim = "#b9b6ad", acc = "#7d85ff", ok = "#4fd1a5";
-  const prompt = "victor@terrassa:~$ ";
+  const prompt = "victor@homelab:~$ ";
   let y = top, time = 0.6, body = "";
   body += `  <rect x=".5" y=".5" width="${W - 1}" height="HEIGHT" rx="14" fill="${bg}" stroke="${t.name === "light" ? "#121211" : "#2e2d2a"}"/>
   <circle cx="28" cy="26" r="6" fill="#3d3c38"/><circle cx="48" cy="26" r="6" fill="#3d3c38"/><circle cx="68" cy="26" r="6" fill="#3d3c38"/>
-  <text x="${W / 2}" y="31" class="term" font-size="13" fill="${dim}" text-anchor="middle">victor@terrassa: ~ — bash</text>
+  <text x="${W / 2}" y="31" class="term" font-size="13" fill="${dim}" text-anchor="middle">victor@homelab: ~ — bash</text>
   <line x1="0" y1="52" x2="${W}" y2="52" stroke="#2e2d2a"/>\n`;
   for (const [cmd, lines] of SESSION) {
     body += appear(time, `  <text x="${x}" y="${y}" class="term" font-size="${size}" fill="${acc}">${esc(prompt)}</text>`) + "\n";
@@ -161,7 +162,7 @@ function terminal(t) {
 
 // ---------- Línea de tiempo ----------
 const STEPS = [
-  ["2024", "CFGM SMR", "Salesians Terrassa", "past"],
+  ["2024", "CFGM SMR", "Salesians", "past"],
   ["2025", "Técnico informático", "CASARRAMONA · 9 meses", "past"],
   ["2026", "SMR terminado", "Nota media 8", "past"],
   ["Ahora", "DAM + ASIR", "Colegio Vedruna Vall", "now"],
@@ -207,9 +208,9 @@ const GENERIC = {
   document: `<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h7M9 17h7"/>`,
 };
 const STACK = [
-  ["Sistemas y redes", [["Windows 10/11", "desktop"], ["Windows Server", "server"], ["Linux", "linux"], ["Ubuntu", "ubuntu"], ["Redes LAN", "network"], ["Ciberseguridad", "shield"], ["Backups", "backup"]]],
+  ["Sistemas y redes", [["Windows 10/11", "desktop"], ["Windows Server", "server"], ["Linux", "linux"], ["Ubuntu", "ubuntu"], ["Raspberry Pi", "raspberrypi"], ["Redes LAN", "network"], ["Ciberseguridad", "shield"], ["Backups", "backup"]]],
   ["Desarrollo", [["C++", "cplusplus"], ["Rust", "rust"], ["TypeScript", "typescript"], ["JavaScript", "javascript"], ["React", "react"], ["Tauri", "tauri"], ["SQLite", "sqlite"], ["HTML y CSS", "html5"]]],
-  ["Herramientas", [["Git", "git"], ["GitHub", "github"], ["GitHub Actions", "githubactions"], ["Cloudflare", "cloudflare"], ["Claude Code", "claude"], ["Office", "document"]]],
+  ["Herramientas", [["Git", "git"], ["GitHub", "github"], ["GitHub Actions", "githubactions"], ["Cloudflare", "cloudflare"], ["Pi-hole", "pihole"], ["Claude Code", "claude"], ["Office", "document"]]],
 ];
 
 function stack(t) {
@@ -242,9 +243,9 @@ function footer(t) {
   <text x="40" y="48" class="mono" font-size="12" fill="${acc}">Contacto</text>
   <text x="34" y="128" class="sans" font-size="76" font-weight="700" letter-spacing="-3.6" fill="${fg}">¿Hablamos?</text>
   <text x="40" y="168" class="sans" font-size="18" fill="${dim}">Abierto a prácticas, formación dual y oportunidades junior en soporte IT,</text>
-  <text x="40" y="192" class="sans" font-size="18" fill="${dim}">sistemas o desarrollo en Terrassa, Barcelona y alrededores.</text>
+  <text x="40" y="192" class="sans" font-size="18" fill="${dim}">sistemas o desarrollo en Barcelona y alrededores.</text>
   <text x="${W - 40}" y="128" class="sans" font-size="20" font-weight="600" fill="${acc}" text-anchor="end">victorsalmeron.dev ↗</text>`;
-  return svg(W, H, t, body, "¿Hablamos? Abierto a prácticas, formación dual y oportunidades junior en soporte IT, sistemas o desarrollo en Terrassa, Barcelona y alrededores. victorsalmeron.dev", ["sans", "mono"], "none");
+  return svg(W, H, t, body, "¿Hablamos? Abierto a prácticas, formación dual y oportunidades junior en soporte IT, sistemas o desarrollo en Barcelona y alrededores. victorsalmeron.dev", ["sans", "mono"], "none");
 }
 
 // ---------- Datos ----------
